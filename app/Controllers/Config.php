@@ -341,7 +341,8 @@ class Config extends Secure_Controller
 
 		if(!empty($upload_data['orig_name']) && $upload_data['raw_name'])
 		{
-			$batch_save_data['company_logo'] = $upload_data['raw_name'] . '.' . $upload_data['file_ext'];
+			$filename = md5($upload_data['raw_name'] . '_' . date('Y-m-d H:i:s:u'));
+			$batch_save_data['company_logo'] = $filename . '.' . $upload_data['file_ext'];
 		}
 
 		$result = $this->appconfig->batch_save($batch_save_data);
@@ -386,11 +387,10 @@ class Config extends Secure_Controller
 
 
 		$filename = $file->getClientName();
-		$info = pathinfo($filename);
 
 		$file_info = [
 			'orig_name' => $filename,
-			'raw_name' => $info['filename'],
+			'raw_name' => md5($filename . '_' . date('Y-m-d H:i:s:u')),
 			'file_ext' => $file->guessExtension()
 		];
 
